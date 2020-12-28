@@ -18,6 +18,7 @@ ament_auto_add_executable(neato_laser_publisher
 )
 
 install(DIRECTORY
+  launch
   DESTINATION share/${PROJECT_NAME}
 )
 

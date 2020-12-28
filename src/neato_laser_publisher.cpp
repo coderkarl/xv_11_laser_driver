@@ -40,26 +40,27 @@
 class LaserNode : public rclcpp::Node
 {
 public:
-    LaserNode() : Node("load_map_client")
+    LaserNode() : Node("xv11_laser")
     {
-        port = declare_parameter("port", "/dev/ttyUSB0");
+        port = declare_parameter("port", "/dev/ttyACM0");
         baud_rate = declare_parameter("baud_rate", 115200);
-        frame_id = declare_parameter("frame_id", "laser");
+        frame_id = declare_parameter("frame_id", "neato_laser");
         firmware_number = declare_parameter("firmware_version", 2);
 
-        RCLCPP_INFO(this->get_logger(), "XV11 Laser Node Initialized");
+        RCLCPP_INFO(this->get_logger(), "XV11 Laser Node (port = %s) Initialized", port.c_str());
     }
 
-    void update()
+    void output(std::string str)
     {
-
+    	RCLCPP_INFO(this->get_logger(),
+    			"%s", str.c_str() );
     }
 
     void output_error(std::string ex_str)
     {
     	RCLCPP_ERROR(this->get_logger(),
     			"Error instantiating laser object. Are you sure you have the correct port and baud rate?"
-    			"Error was %s", ex_str );
+    			"Error was %s", ex_str.c_str() );
     }
 
 public:
@@ -68,8 +69,6 @@ public:
     std::string frame_id;
     int firmware_number;
 };
-
-//************************OLD******************
 
 int main(int argc, char **argv)
 {
@@ -86,7 +85,7 @@ int main(int argc, char **argv)
     auto motor_pub = node->create_publisher<std_msgs::msg::UInt16>("rpms", 1000);
 
     while (rclcpp::ok()) {
-      sensor_msgs::msg::LaserScan::SharedPtr scan;
+      sensor_msgs::msg::LaserScan::SharedPtr scan(new sensor_msgs::msg::LaserScan);
       scan->header.frame_id = node->frame_id;
       scan->header.stamp = node->now();
       laser.poll(scan);
