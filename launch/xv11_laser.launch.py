@@ -31,13 +31,21 @@ def generate_launch_description():
         executable="neato_laser_publisher",
         output="screen",
         emulate_tty=True,
-        parameters=[{"port": "/dev/ttyACM0"},
+        parameters=[{"port": "/dev/neato_laser"},
                     {"baud_rate": 115200},
                     {"frame_id": "laser"},
                     {"firmware_number": 2}
         ]
     )
     
+    static_laser_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_laser_tf',
+        arguments=['0', '0', '0', '1.57', '0', '0', 'base_link', 'laser']
+    )
+    
     ld.add_action(laser_node)
+    ld.add_action(static_laser_tf_node)
     
     return ld
