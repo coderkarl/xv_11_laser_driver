@@ -40,7 +40,7 @@ namespace xv_11_laser_driver {
     serial_.set_option(boost::asio::serial_port_base::baud_rate(baud_rate_));
   }
 
-  void XV11Laser::poll(sensor_msgs::LaserScan::Ptr scan) {
+  void XV11Laser::poll(sensor_msgs::msg::LaserScan::SharedPtr scan) {
     uint8_t temp_char;
     uint8_t start_count = 0;
     bool got_scan = false;
@@ -88,9 +88,9 @@ namespace xv_11_laser_driver {
 	      uint8_t byte1 = raw_bytes[i+1];
 	      uint8_t byte2 = raw_bytes[i+2];
 	      uint8_t byte3 = raw_bytes[i+3];
-	      // First two bits of byte1 are status flags
-	      uint8_t flag1 = (byte1 & 0x80) >> 7;  // No return/max range/too low of reflectivity
-	      uint8_t flag2 = (byte1 & 0x40) >> 6;  // Object too close, possible poor reading due to proximity kicks in at < 0.6m
+	      // First two bits of byte1 are status flags, unused in ROS2 node
+	      //uint8_t flag1 = (byte1 & 0x80) >> 7;  // No return/max range/too low of reflectivity
+	      //uint8_t flag2 = (byte1 & 0x40) >> 6;  // Object too close, possible poor reading due to proximity kicks in at < 0.6m
 	      // Remaining bits are the range in mm
 	      uint16_t range = ((byte1 & 0x3F)<< 8) + byte0;
 	      // Last two bytes represent the uncertanty or intensity, might also be pixel area of target...
@@ -166,4 +166,4 @@ namespace xv_11_laser_driver {
       }
     }
   }
-};
+}

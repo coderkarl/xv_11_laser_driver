@@ -32,7 +32,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-#include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/msg/laser_scan.hpp>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
 #include <string>
@@ -58,12 +58,12 @@ namespace xv_11_laser_driver {
               * @brief Poll the laser to get a new scan. Blocks until a complete new scan is received or close is called.
               * @param scan LaserScan message pointer to fill in with the scan. The caller is responsible for filling in the ROS timestamp and frame_id
               */
-            void poll(sensor_msgs::LaserScan::Ptr scan);
+            void poll(sensor_msgs::msg::LaserScan::SharedPtr scan);
 
             /**
               * @brief Close the driver down and prevent the polling loop from advancing
               */
-            void close() { shutting_down_ = true; };
+            void close() { shutting_down_ = true; }
 
         private:
             std::string port_; ///< @brief The serial port the driver is attached to
@@ -74,4 +74,4 @@ namespace xv_11_laser_driver {
             boost::asio::serial_port serial_; ///< @brief Actual serial port object for reading/writing to the XV11 Laser Scanner
 	    uint16_t motor_speed_; ///< @brief current motor speed as reported by the XV11.
     };
-};
+}

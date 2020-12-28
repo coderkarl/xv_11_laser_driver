@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>xv_11_laser_driver</name>
   <version>0.3.0</version>
   <description>Neato XV-11 Laser Driver. This driver works with the laser when it is removed from the XV-11 Robot as opposed to reading scans from the Neato's USB port.</description>
@@ -29,6 +29,7 @@
   <author>Chad Rockey</author>
   <author>Rohan Agrawal</author>
   <author>Steve 'dillo Okay</author>
+  <author>coderkarl</author>
 
 
   <!-- The *_depend tags are used to specify dependencies -->
@@ -42,18 +43,12 @@
   <!--   <run_depend>message_runtime</run_depend> -->
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
-  <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>roscpp</build_depend>
-  <run_depend>boost</run_depend>
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <depend>sensor_msgs</depend>
+  <depend>rclcpp</depend>
+  <exec_depend>boost</exec_depend>
 
-
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- You can specify that this package is a metapackage here: -->
-    <!-- <metapackage/> -->
-
-    <!-- Other tools can request additional information be placed here -->
-
+    <build_type>ament_cmake</build_type>
   </export>
 </package>
